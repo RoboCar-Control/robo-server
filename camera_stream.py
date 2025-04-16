@@ -2,7 +2,7 @@ import base64
 from io import BytesIO
 from PIL import Image
 from time import sleep
-from robot_hat import Vilib
+from vilib import Vilib
 from flask_socketio import emit
 from threading import Thread
 
