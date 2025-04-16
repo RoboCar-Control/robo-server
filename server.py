@@ -74,9 +74,9 @@ def on_stop_recording():
 #     voltage = robot.get_battery_voltage()
 #     emit('battery_status', {'voltage': voltage})
 
-@socketio.on('start_video')
-def handle_start_video():
-    start_video_stream()
+# @socketio.on('start_video')
+# def handle_start_video():
+#     start_video_stream()
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5000)
