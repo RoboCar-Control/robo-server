@@ -3,7 +3,6 @@ eventlet.monkey_patch()
 
 from flask import Flask, Response
 from flask_socketio import SocketIO, emit
-from camera_stream import start_video_stream
 import robot_controller as robot
 import logger
 
