@@ -1,6 +1,6 @@
 #from robot_hat import battery
 from picarx import Picarx
-from vilib import Vilib
+# from vilib import Vilib
 from time import sleep, time, strftime, localtime
 from robot_hat.utils import reset_mcu
 import os
@@ -59,12 +59,12 @@ def start_autonomous():
     finally:
         px.forward(0)
 
-def take_photo():
-    _time = strftime('%Y-%m-%d-%H-%M-%S',localtime(time()))
-    name = 'photo_%s'%_time
-    path = f"{user_home}/Pictures/picar-x/"
-    Vilib.take_photo(name, path)
-    print('\nphoto save as %s%s.jpg'%(path,name))
+# def take_photo():
+#     _time = strftime('%Y-%m-%d-%H-%M-%S',localtime(time()))
+#     name = 'photo_%s'%_time
+#     path = f"{user_home}/Pictures/picar-x/"
+#     Vilib.take_photo(name, path)
+#     print('\nphoto save as %s%s.jpg'%(path,name))
 
 def stop_autonomous():
     px.stop()
