@@ -77,6 +77,6 @@ def on_stop_recording():
 # def handle_start_video():
 #     start_video_stream()
 
-if __name__ == '__main__':
-    print("starting server")
-    socketio.run(app, host='0.0.0.0', port=5000)
+#if __name__ == '__main__':
+print("starting server")
+socketio.run(app, host='0.0.0.0', port=5000)
