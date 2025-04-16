@@ -69,10 +69,10 @@ def on_stop_recording():
     emit('status', {'message': "Recording stopped"})
     # Add actual stop-recording logic here
 
-@socketio.on('get_battery')
-def handle_battery():
-    voltage = robot.get_battery_voltage()
-    emit('battery_status', {'voltage': voltage})
+# @socketio.on('get_battery')
+# def handle_battery():
+#     voltage = robot.get_battery_voltage()
+#     emit('battery_status', {'voltage': voltage})
 
 @socketio.on('start_video')
 def handle_start_video():

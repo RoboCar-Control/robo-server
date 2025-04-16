@@ -1,4 +1,4 @@
-from robot_hat import battery
+#from robot_hat import battery
 from picarx import Picarx
 from vilib import Vilib
 from time import sleep, time, strftime, localtime
@@ -69,6 +69,6 @@ def take_photo():
 def stop_autonomous():
     px.stop()
 
-def get_battery_voltage():
-    voltage = battery.get_voltage()
-    return voltage
+# def get_battery_voltage():
+#     voltage = battery.get_voltage()
+#     return voltage
