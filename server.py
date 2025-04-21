@@ -1,29 +1,33 @@
-import eventlet
-eventlet.monkey_patch()
+# import eventlet
+# eventlet.monkey_patch()
 
 from flask import Flask, Response
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, request
 import robot_controller as robot
 import logger
+
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, cors_allowed_origins='*')
+HOST = "192.168.1.102"
+active_streams = {}
 
 @app.route('/')
 def index():
     return "Picar-X WebSocket Control Server"
 
-# @app.route('/video_feed')
-# def video_feed():
-#     return Response(generate_frames(),
-#                     mimetype='multipart/x-mixed-replace; boundary=frame')
+def video_stream():
+    for frame in robot.generate_frames():
+        emit('video_frame', {'image': frame})
+        socketio.sleep(0.03) 
 
 @socketio.on('connect')
 def on_connect():
     logger.log_event('connect', 'Client connected')
-    emit('status', {'message': 'Connected to robot server'})
+    battery = robot.get_battery_voltage()
+    emit('status', {'message': 'Connected to robot server', 'voltage': battery})
 
 @socketio.on('manual_control')
 def handle_manual_control(data):
@@ -56,6 +60,27 @@ def on_stop_autonomous():
     logger.log_event('autonomous', "Autonomous mode stopped")
     emit('status', {'message': "Autonomous mode stopped"})
 
+@socketio.on('video-stream')
+def handle_video_stream():
+    sid = request.sid
+    if sid in active_streams:
+        print(f"Stream already active for {sid}")
+        return
+
+    print(f"Starting stream for {sid}")
+    active_streams[sid] = True
+
+    def stream():
+        for frame in robot.generate_frames():
+            if not active_streams.get(sid):
+                print(f"Stopping stream for {sid}")
+                break
+            socketio.emit('video_frame', {'image': frame}, to=sid)
+            socketio.sleep(0.03)
+        active_streams.pop(sid, None)
+
+    socketio.start_background_task(target=stream)
+
 @socketio.on('start_recording')
 def on_start_recording():
     logger.log_event('video', "Started recording")
@@ -68,15 +93,12 @@ def on_stop_recording():
     emit('status', {'message': "Recording stopped"})
     # Add actual stop-recording logic here
 
-# @socketio.on('get_battery')
-# def handle_battery():
-#     voltage = robot.get_battery_voltage()
-#     emit('battery_status', {'voltage': voltage})
-
-# @socketio.on('start_video')
-# def handle_start_video():
-#     start_video_stream()
+@socketio.on('disconnect')
+def handle_disconnect():
+    sid = request.sid
+    print(f"Client disconnected: {sid}")
+    active_streams.pop(sid, None)
 
 if __name__ == '__main__':
     print("starting server", flush=True)
-    socketio.run(app, host='0.0.0.0', port=5000)
+    socketio.run(app, host=HOST, port=5000)
