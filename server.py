@@ -89,11 +89,11 @@ def on_stop_recording():
     emit('status', {'message': "Recording stopped"})
     # Add actual stop-recording logic here
 
-@socketio.on('disconnect')
-def handle_disconnect():
-    sid = request.sid
-    print(f"Client disconnected: {sid}")
-    active_streams.pop(sid, None)
+# @socketio.on('disconnect')
+# def handle_disconnect():
+#     sid = request.sid
+#     print(f"Client disconnected: {sid}")
+#     active_streams.pop(sid, None)
 
 if __name__ == '__main__':
     print("starting server", flush=True)
