@@ -2,7 +2,7 @@
 # eventlet.monkey_patch()
 
 from flask import Flask, Response
-from flask_socketio import SocketIO, emit, request
+from flask_socketio import SocketIO, emit
 import robot_controller as robot
 import logger
 
@@ -62,22 +62,22 @@ def on_stop_autonomous():
 
 @socketio.on('video-stream')
 def handle_video_stream():
-    sid = request.sid
-    if sid in active_streams:
-        print(f"Stream already active for {sid}")
-        return
+    # sid = request.sid
+    # if sid in active_streams:
+    #     print(f"Stream already active for {sid}")
+    #     return
 
-    print(f"Starting stream for {sid}")
-    active_streams[sid] = True
+    # print(f"Starting stream for {sid}")
+    # active_streams[sid] = True
 
     def stream():
         for frame in robot.generate_frames():
-            if not active_streams.get(sid):
-                print(f"Stopping stream for {sid}")
-                break
-            socketio.emit('video_frame', {'image': frame}, to=sid)
+            # if not active_streams.get(sid):
+            #     print(f"Stopping stream for {sid}")
+            #     break
+            socketio.emit('video_frame', {'image': frame})
             socketio.sleep(0.03)
-        active_streams.pop(sid, None)
+        #active_streams.pop(sid, None)
 
     socketio.start_background_task(target=stream)
 
