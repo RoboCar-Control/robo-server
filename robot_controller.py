@@ -87,7 +87,7 @@ def get_battery_voltage():
     return voltage
 
 def generate_frames():
-    camera = cv2.VideoCapture('/dev/video0')
+    camera = cv2.VideoCapture("libcamerasrc ! videoconvert ! appsink", cv2.CAP_GSTREAMER)
     camera.set(3, 640)
     camera.set(4, 480)
     if not camera.isOpened():
