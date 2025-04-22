@@ -66,16 +66,15 @@ def handle_video_stream():
     # print(f"Starting stream for {sid}")
     # active_streams[sid] = True
 
-    def stream():
-        for frame in robot.generate_frames():
-            # if not active_streams.get(sid):
-            #     print(f"Stopping stream for {sid}")
-            #     break
-            socketio.emit('video_frame', {'image': frame})
-            socketio.sleep(0.03)
+    for frame in robot.generate_frames():
+        # if not active_streams.get(sid):
+        #     print(f"Stopping stream for {sid}")
+        #     break
+        socketio.emit('video_frame', {'image': frame})
+        socketio.sleep(0.03)
         #active_streams.pop(sid, None)
 
-    socketio.start_background_task(target=stream)
+    #socketio.start_background_task(target=stream)
 
 @socketio.on('start_recording')
 def on_start_recording():
