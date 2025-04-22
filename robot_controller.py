@@ -104,6 +104,8 @@ def generate_frames():
     while True:
         # success, frame = camera.read()
         frame = camera.capture_array()
+        if frame.shape[2] == 4:
+            frame = frame[:, :, :3]
         results = model(frame)
 
         model_frame = results[0].plot()
