@@ -1,3 +1,7 @@
+import sys
+
+sys.path.append('env/lib/python3.11/site-packages')
+
 from robot_hat import ADC
 from picarx import Picarx
 # from vilib import Vilib
@@ -9,11 +13,6 @@ import logger
 import base64
 import time
 from picamera2 import Picamera2
-
-import sys
-
-sys.path.append('env/lib/python3.11/site-packages')
-
 from ultralytics import YOLO
 
 user = os.getlogin()
