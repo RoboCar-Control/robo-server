@@ -23,7 +23,9 @@ def video_stream():
 def on_connect():
     logger.log_event('connect', 'Client connected')
     battery = robot.get_battery_voltage()
-    emit('status', {'message': 'Connected to robot server', 'voltage': battery})
+    wifi = robot.get_wifi_ssid()
+    cpu = robot.get_cup_status()
+    emit('status', {'message': 'Connected', 'voltage': battery, 'wifi': wifi, 'cpu':cpu})
 
 @socketio.on('manual_control')
 def handle_manual_control(data):
@@ -58,23 +60,9 @@ def on_stop_autonomous():
 
 @socketio.on('video-stream')
 def handle_video_stream():
-    # sid = request.sid
-    # if sid in active_streams:
-    #     print(f"Stream already active for {sid}")
-    #     return
-
-    # print(f"Starting stream for {sid}")
-    # active_streams[sid] = True
-
     for frame in robot.generate_frames():
-        # if not active_streams.get(sid):
-        #     print(f"Stopping stream for {sid}")
-        #     break
         socketio.emit('video_frame', {'image': frame})
         socketio.sleep(0.03)
-        #active_streams.pop(sid, None)
-
-    #socketio.start_background_task(target=stream)
 
 @socketio.on('start_recording')
 def on_start_recording():
@@ -86,13 +74,7 @@ def on_start_recording():
 def on_stop_recording():
     logger.log_event('video', "Stopped recording")
     emit('status', {'message': "Recording stopped"})
-    # Add actual stop-recording logic here
 
-# @socketio.on('disconnect')
-# def handle_disconnect():
-#     sid = request.sid
-#     print(f"Client disconnected: {sid}")
-#     active_streams.pop(sid, None)
 
 if __name__ == '__main__':
     print("starting server", flush=True)

@@ -14,6 +14,8 @@ import base64
 import time
 from picamera2 import Picamera2
 from ultralytics import YOLO
+import subprocess
+import psutil
 
 user = os.getlogin()
 user_home = os.path.expanduser(f'~{user}')
@@ -94,15 +96,20 @@ def get_battery_voltage():
     voltage = battery.read()
     return voltage
 
+def get_wifi_ssid():
+    result = subprocess.check_output(['iwgetid', '-r'])
+    ssid = result.decode('utf-8').strip()
+    return ssid if ssid else "Not connected"
+
+def get_cup_status():
+    cpu_usage = psutil.cpu_percent(interval=1)
+    return cpu_usage
+
 def generate_frames():
     camera = Picamera2()
     camera.start()
-    # if not camera.isOpened():
-    #     print("Camera failed to open")
-    #     return
 
     while True:
-        # success, frame = camera.read()
         frame = camera.capture_array()
         if frame.shape[2] == 4:
             frame = frame[:, :, :3]
