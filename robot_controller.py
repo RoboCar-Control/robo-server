@@ -96,6 +96,7 @@ def generate_frames():
 
     while True:
         success, frame = camera.read()
+        print(frame)
         if not success:
             print("Failed to read frame from camera")
             break
