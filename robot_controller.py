@@ -9,6 +9,7 @@ import logger
 import base64
 import time
 from picamera2 import Picamera2
+from ultralytics import YOLO
 import sys
 
 sys.path.append('env/lib/python3.11/site-packages')
