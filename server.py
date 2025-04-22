@@ -75,6 +75,12 @@ def on_stop_recording():
     logger.log_event('video', "Stopped recording")
     emit('status', {'message': "Recording stopped"})
 
+@socketio.on("head_control")
+def on_move_head(data):
+    direction = data.get('direction')
+    robot.move_head(direction)
+    emit('status', {'message': f'Moving head {direction}'})
+
 
 if __name__ == '__main__':
     print("starting server", flush=True)
