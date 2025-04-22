@@ -88,6 +88,8 @@ def get_battery_voltage():
 
 def generate_frames():
     camera = cv2.VideoCapture(0)
+    camera.set(3, 640)
+    camera.set(4, 480)
     if not camera.isOpened():
         logger.error("Camera failed to open")
         return
