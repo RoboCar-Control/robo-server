@@ -9,6 +9,9 @@ import logger
 import base64
 import time
 from picamera2 import Picamera2
+import sys
+
+sys.path.append('env/lib/python3.11/site-packages')
 
 user = os.getlogin()
 user_home = os.path.expanduser(f'~{user}')
@@ -88,9 +91,7 @@ def get_battery_voltage():
     return voltage
 
 def generate_frames():
-    # camera = cv2.VideoCapture("libcamerasrc ! videoconvert ! appsink", cv2.CAP_GSTREAMER)
-    # camera.set(3, 640)
-    # camera.set(4, 480)
+    model = YOLO("yolov8n.pt")
     camera = Picamera2()
     camera.start()
     # if not camera.isOpened():
@@ -100,12 +101,10 @@ def generate_frames():
     while True:
         # success, frame = camera.read()
         frame = camera.capture_array()
-        print(frame)
-        # if not frame:
-        #     print("Failed to read frame from camera")
-        #     break
+        results = model(frame)
 
-        ret, buffer = cv2.imencode('.jpg', frame)
+        model_frame = results[0].plot()
+        ret, buffer = cv2.imencode('.jpg', model_frame)
         if not ret:
             print("Failed to encode frame")
             continue
