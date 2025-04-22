@@ -19,6 +19,8 @@ user = os.getlogin()
 user_home = os.path.expanduser(f'~{user}')
 battery = ADC('A4')
 
+model = YOLO("yolov8n.pt")
+
 reset_mcu()
 sleep(0.2)
 px = Picarx()
@@ -93,7 +95,6 @@ def get_battery_voltage():
     return voltage
 
 def generate_frames():
-    model = YOLO("yolov8n.pt")
     camera = Picamera2()
     camera.start()
     # if not camera.isOpened():
