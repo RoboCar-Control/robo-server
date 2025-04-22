@@ -101,9 +101,9 @@ def generate_frames():
         # success, frame = camera.read()
         frame = camera.capture_array()
         print(frame)
-        if not frame:
-            print("Failed to read frame from camera")
-            break
+        # if not frame:
+        #     print("Failed to read frame from camera")
+        #     break
 
         ret, buffer = cv2.imencode('.jpg', frame)
         if not ret:
