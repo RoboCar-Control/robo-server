@@ -93,9 +93,9 @@ def generate_frames():
     # camera.set(4, 480)
     camera = Picamera2()
     camera.start()
-    if not camera.isOpened():
-        print("Camera failed to open")
-        return
+    # if not camera.isOpened():
+    #     print("Camera failed to open")
+    #     return
 
     while True:
         # success, frame = camera.read()
