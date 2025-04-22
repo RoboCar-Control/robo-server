@@ -8,6 +8,7 @@ import cv2
 import logger
 import base64
 import time
+from picamera2 import Picamera2
 
 user = os.getlogin()
 user_home = os.path.expanduser(f'~{user}')
@@ -87,23 +88,26 @@ def get_battery_voltage():
     return voltage
 
 def generate_frames():
-    camera = cv2.VideoCapture("libcamerasrc ! videoconvert ! appsink", cv2.CAP_GSTREAMER)
-    camera.set(3, 640)
-    camera.set(4, 480)
+    # camera = cv2.VideoCapture("libcamerasrc ! videoconvert ! appsink", cv2.CAP_GSTREAMER)
+    # camera.set(3, 640)
+    # camera.set(4, 480)
+    camera = Picamera2()
+    camera.start()
     if not camera.isOpened():
-        logger.error("Camera failed to open")
+        print("Camera failed to open")
         return
 
     while True:
-        success, frame = camera.read()
+        # success, frame = camera.read()
+        frame = camera.capture_array()
         print(frame)
-        if not success:
+        if not frame:
             print("Failed to read frame from camera")
             break
 
         ret, buffer = cv2.imencode('.jpg', frame)
         if not ret:
-            logger.error("Failed to encode frame")
+            print("Failed to encode frame")
             continue
 
         jpg_as_text = base64.b64encode(buffer).decode('utf-8')
