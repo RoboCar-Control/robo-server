@@ -87,7 +87,7 @@ def get_battery_voltage():
     return voltage
 
 def generate_frames():
-    camera = cv2.VideoCapture(0)
+    camera = cv2.VideoCapture('/dev/video0')
     camera.set(3, 640)
     camera.set(4, 480)
     if not camera.isOpened():
@@ -110,4 +110,3 @@ def generate_frames():
         yield jpg_as_text
 
         time.sleep(0.03)
-    camera.release()
