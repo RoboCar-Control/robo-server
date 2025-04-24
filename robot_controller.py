@@ -77,14 +77,26 @@ def move_head(direction):
 def stop():
     px.stop()
 
+
+
 def increase_speed(speed):
     move(status, speed)
+    
+
+should_stop = False
+
+def stop_flag():
+    return should_stop
+
+main(px, stop_flag)
 
 def start_autonomous():
-    main(px)
+    global should_stop
+    should_stop = True
 
-# def stop_autonomous():
-#     px.sto
+def stop_autonomous():
+    global should_stop
+    should_stop = False
 # def start_autonomous():
 #     POWER = 50
 #     SafeDistance = 40

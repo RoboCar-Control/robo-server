@@ -1,15 +1,16 @@
 # from picarx import Picarx
 import time
-
+from robot_controller import stop_flag
+ 
 POWER = 50
 SafeDistance = 40   # > 40 safe
 DangerDistance = 20 # > 20 && < 40 turn around, 
                     # < 20 backward
 # px = Picarx()
-def main(px):
+def main(px, stop_flag):
     try:
         # px = Picarx(ultrasonic_pins=['D2','D3']) # tring, echo
-        while True:
+        while not stop_flag():
             distance = round(px.ultrasonic.read(), 2)
             print("distance: ",distance)
             if distance >= SafeDistance:
