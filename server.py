@@ -65,8 +65,7 @@ def handle_video_stream():
         socketio.sleep(0.03)
 
 @socketio.on('stop_stream')
-def on_stop_recording(data):
-    state= data.get("state")
+def on_stop_recording():
     robot.close_stream()
     logger.log_event('video', "Stopped recording")
     emit('status', {'message': "Recording stopped"})
