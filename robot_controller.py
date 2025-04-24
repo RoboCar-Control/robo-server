@@ -129,9 +129,10 @@ def get_cup_status():
 
 yolo_running = True
 
-def close_stream(state):
+def close_stream():
     global yolo_running
-    yolo_running = state
+    yolo_running = False
+    #generate_frames()
 
 def generate_frames():
     camera = Picamera2()
