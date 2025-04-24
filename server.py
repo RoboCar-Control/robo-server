@@ -54,7 +54,7 @@ def on_start_autonomous():
 
 @socketio.on('stop_autonomous')
 def on_stop_autonomous():
-    robot.stop_autonomous()
+    robot.stop()
     logger.log_event('autonomous', "Autonomous mode stopped")
     emit('status', {'message': "Autonomous mode stopped"})
 
@@ -64,14 +64,10 @@ def handle_video_stream():
         socketio.emit('video_frame', {'image': frame})
         socketio.sleep(0.03)
 
-@socketio.on('start_recording')
-def on_start_recording():
-    logger.log_event('video', "Started recording")
-    emit('status', {'message': "Recording started"})
-    # Add actual recording logic here
-
-@socketio.on('stop_recording')
-def on_stop_recording():
+@socketio.on('stop_stream')
+def on_stop_recording(data):
+    state= data.get("state")
+    robot.close_stream()
     logger.log_event('video', "Stopped recording")
     emit('status', {'message': "Recording stopped"})
 
