@@ -88,11 +88,12 @@ def stop_flag():
     return should_stop
 
 def start_autonomous():
-    main(px, stop_flag)
+    main(px, True)
 
 def stop_autonomous():
-    global should_stop
-    should_stop = False
+    main(px, False)
+    # global should_stop
+    # should_stop = False
 # def start_autonomous():
 #     POWER = 50
 #     SafeDistance = 40
