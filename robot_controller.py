@@ -139,7 +139,8 @@ def close_stream():
 def generate_frames():
     camera = Picamera2()
     camera.start()
-
+    global yolo_running
+    yolo_running = True
     try:
         while yolo_running:
             frame = camera.capture_array()
