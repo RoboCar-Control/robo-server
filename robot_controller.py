@@ -46,10 +46,9 @@ def move(direction, speed):
         px.set_dir_servo_angle(0)
         px.backward(speed)
 
+pan_angle = 0
+tilt_angle = 0
 def move_head(direction):
-    pan_angle = 0
-    tilt_angle = 0
-
     if 'u' == direction:
         tilt_angle+=5
         if tilt_angle>30:
@@ -69,6 +68,7 @@ def move_head(direction):
 
     px.set_cam_tilt_angle(tilt_angle)
     px.set_cam_pan_angle(pan_angle)
+    
 
 
 def stop():
