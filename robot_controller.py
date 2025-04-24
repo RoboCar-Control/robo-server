@@ -92,14 +92,14 @@ def stop_flag():
 autonomous_process = None
 def start_autonomous():
     global should_stop, autonomous_thread
-    # autonomous_process = Process(target=main, args=(px, stop_flag))
-    autonomous_process = threading.Thread(target=main, args=(px, stop_flag))
+    autonomous_process = Process(target=main, args=(px, stop_flag))
+    #autonomous_process = threading.Thread(target=main, args=(px, stop_flag))
     autonomous_process.start()
 
 def stop_autonomous():
     global should_stop
     should_stop = False
-    # autonomous_process.terminate()
+    autonomous_process.terminate()
 
 
 # def start_autonomous():
