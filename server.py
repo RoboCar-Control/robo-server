@@ -64,7 +64,7 @@ def on_start_autonomous():
 def on_stop_autonomous(data):
     message = data.get('message')
     print(message)
-    robot.stop()
+    robot.stop_autonomous()
     logger.log_event('autonomous', "Autonomous mode stopped")
     emit('status', {'message': "Autonomous mode stopped"})
 
