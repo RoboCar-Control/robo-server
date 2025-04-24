@@ -83,16 +83,12 @@ def increase_speed(speed):
     move(status, speed)
     
 
-should_stop = False
-
+should_stop = True
 def stop_flag():
     return should_stop
 
-main(px, stop_flag)
-
 def start_autonomous():
-    global should_stop
-    should_stop = True
+    main(px, stop_flag)
 
 def stop_autonomous():
     global should_stop
