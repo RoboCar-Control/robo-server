@@ -17,6 +17,7 @@ from ultralytics import YOLO
 import subprocess
 import psutil
 from avoid_obstacle import main
+import threading
 
 user = os.getlogin()
 user_home = os.path.expanduser(f'~{user}')
@@ -87,13 +88,17 @@ should_stop = True
 def stop_flag():
     return should_stop
 
+autonomous_thread = None
 def start_autonomous():
-    main(px, True)
+    global should_stop, autonomous_thread
+    autonomous_thread = threading.Thread(target=main, args=(px, stop_flag))
+    autonomous_thread.start()
 
 def stop_autonomous():
-    main(px, False)
-    # global should_stop
-    # should_stop = False
+    global should_stop
+    should_stop = False
+
+
 # def start_autonomous():
 #     POWER = 50
 #     SafeDistance = 40
