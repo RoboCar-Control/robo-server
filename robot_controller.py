@@ -18,6 +18,7 @@ import subprocess
 import psutil
 from avoid_obstacle import main
 import threading
+from multiprocessing import Process
 
 user = os.getlogin()
 user_home = os.path.expanduser(f'~{user}')
@@ -88,15 +89,16 @@ should_stop = True
 def stop_flag():
     return should_stop
 
-autonomous_thread = None
+autonomous_process = None
 def start_autonomous():
     global should_stop, autonomous_thread
-    autonomous_thread = threading.Thread(target=main, args=(px, stop_flag))
-    autonomous_thread.start()
+    autonomous_process = Process(target=main, args=(px, stop_flag))
+    autonomous_process.start()
 
 def stop_autonomous():
     global should_stop
     should_stop = False
+    autonomous_process.terminate()
 
 
 # def start_autonomous():
