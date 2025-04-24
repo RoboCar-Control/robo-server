@@ -2,6 +2,7 @@ from flask import Flask, Response
 from flask_socketio import SocketIO, emit
 import robot_controller as robot
 import logger
+import subprocess
 
 
 app = Flask(__name__)
@@ -46,15 +47,24 @@ def on_stop():
     logger.log_event('manual', "Stop command received")
     emit('status', {'message': "Stopped"})
 
+# @socketio.on('start_autonomous')
+# def on_start_autonomous():
+#     robot.start_autonomous()
+#     logger.log_event('autonomous', "Autonomous mode started")
+#     emit('status', {'message': "Autonomous mode activated"})
+autonomous_process=''
+
 @socketio.on('start_autonomous')
 def on_start_autonomous():
-    robot.start_autonomous()
+    global autonomous_process
+    autonomous_process = subprocess.Popen(["python", "../example/13.app_control.py"])
     logger.log_event('autonomous', "Autonomous mode started")
     emit('status', {'message': "Autonomous mode activated"})
 
 @socketio.on('stop_autonomous')
 def on_stop_autonomous():
-    robot.stop()
+    global autonomous_process
+    autonomous_process.terminate()
     logger.log_event('autonomous', "Autonomous mode stopped")
     emit('status', {'message': "Autonomous mode stopped"})
 
