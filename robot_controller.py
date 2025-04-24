@@ -27,7 +27,7 @@ model = YOLO("yolov8n.pt")
 reset_mcu()
 sleep(0.2)
 px = Picarx()
-main(px)
+
 status = ''
 def move(direction, speed):
     if direction == 'forward':
@@ -81,34 +81,36 @@ def increase_speed(speed):
     move(status, speed)
 
 def start_autonomous():
-    POWER = 50
-    SafeDistance = 40
-    DangerDistance = 20
+    main(px)
+# def start_autonomous():
+#     POWER = 50
+#     SafeDistance = 40
+#     DangerDistance = 20
 
-    try:
-        while True:
-            distance = round(px.ultrasonic.read(), 2)
-            print(f"Distance: {distance} cm", end=' - ')
+#     try:
+#         while True:
+#             distance = round(px.ultrasonic.read(), 2)
+#             print(f"Distance: {distance} cm", end=' - ')
 
-            if distance >= SafeDistance:
-                print("Moving forward")
-                px.set_dir_servo_angle(0)
-                px.forward(POWER)
-            elif DangerDistance <= distance < SafeDistance:
-                print("Avoiding obstacle")
-                px.set_dir_servo_angle(30)
-                px.forward(POWER)
-                time.sleep(0.1)
-            else:
-                print("Too close! Reversing")
-                px.set_dir_servo_angle(-30)
-                px.backward(POWER)
-                time.sleep(0.5)
-    except KeyboardInterrupt:
-        print("Autonomous mode interrupted.")
-    finally:
-        px.forward(0)
-        print("Motors stopped.")
+#             if distance >= SafeDistance:
+#                 print("Moving forward")
+#                 px.set_dir_servo_angle(0)
+#                 px.forward(POWER)
+#             elif DangerDistance <= distance < SafeDistance:
+#                 print("Avoiding obstacle")
+#                 px.set_dir_servo_angle(30)
+#                 px.forward(POWER)
+#                 time.sleep(0.1)
+#             else:
+#                 print("Too close! Reversing")
+#                 px.set_dir_servo_angle(-30)
+#                 px.backward(POWER)
+#                 time.sleep(0.5)
+#     except KeyboardInterrupt:
+#         print("Autonomous mode interrupted.")
+#     finally:
+#         px.forward(0)
+#         print("Motors stopped.")
 
 # def take_photo():
 #     _time = strftime('%Y-%m-%d-%H-%M-%S',localtime(time()))

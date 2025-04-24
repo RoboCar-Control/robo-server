@@ -56,15 +56,13 @@ autonomous_process=None
 
 @socketio.on('start_autonomous')
 def on_start_autonomous():
-    global autonomous_process
-    autonomous_process = subprocess.Popen(["python", "avoiding_obstacles.py"])
+    robot.start_autonomous()
     logger.log_event('autonomous', "Autonomous mode started")
     emit('status', {'message': "Autonomous mode activated"})
 
 @socketio.on('stop_autonomous')
 def on_stop_autonomous():
-    global autonomous_process
-    autonomous_process.terminate()
+    robot.stop()
     logger.log_event('autonomous', "Autonomous mode stopped")
     emit('status', {'message': "Autonomous mode stopped"})
 
