@@ -10,7 +10,7 @@ DangerDistance = 20 # > 20 && < 40 turn around,
 def main(px, stop_flag):
     try:
         # px = Picarx(ultrasonic_pins=['D2','D3']) # tring, echo
-        while not stop_flag():
+        while stop_flag():
             distance = round(px.ultrasonic.read(), 2)
             print("distance: ",distance)
             if distance >= SafeDistance:
