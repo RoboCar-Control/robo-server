@@ -62,7 +62,7 @@ def on_start_autonomous():
 
 @socketio.on('stop_autonomous')
 def on_stop_autonomous():
-    robot.stop()
+    robot.stop_autonomous()
     logger.log_event('autonomous', "Autonomous mode stopped")
     emit('status', {'message': "Autonomous mode stopped"})
 

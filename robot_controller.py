@@ -82,6 +82,9 @@ def increase_speed(speed):
 
 def start_autonomous():
     main(px)
+
+def stop_autonomous():
+    px.forward(0)
 # def start_autonomous():
 #     POWER = 50
 #     SafeDistance = 40
