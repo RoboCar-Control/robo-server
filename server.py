@@ -57,7 +57,7 @@ autonomous_process=''
 @socketio.on('start_autonomous')
 def on_start_autonomous():
     global autonomous_process
-    autonomous_process = subprocess.Popen(["python", "../example/13.app_control.py"])
+    autonomous_process = subprocess.Popen(["python", "../example/4.avoiding_obstacles.py"])
     logger.log_event('autonomous', "Autonomous mode started")
     emit('status', {'message': "Autonomous mode activated"})
 
