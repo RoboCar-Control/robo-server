@@ -52,7 +52,7 @@ def on_stop():
 #     robot.start_autonomous()
 #     logger.log_event('autonomous', "Autonomous mode started")
 #     emit('status', {'message': "Autonomous mode activated"})
-autonomous_process=''
+autonomous_process=None
 
 @socketio.on('start_autonomous')
 def on_start_autonomous():
