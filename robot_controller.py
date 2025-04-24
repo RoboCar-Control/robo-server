@@ -92,7 +92,7 @@ main(px, stop_flag)
 
 def start_autonomous():
     global should_stop
-    # should_stop = True
+    should_stop = True
 
 def stop_autonomous():
     global should_stop
