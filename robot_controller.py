@@ -100,6 +100,7 @@ def stop_autonomous():
     global should_stop, autonomous_process
     should_stop = False
     autonomous_process.terminate()
+    px.stop()
 
 
 # def start_autonomous():
