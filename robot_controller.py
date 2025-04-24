@@ -49,6 +49,8 @@ def move(direction, speed):
 pan_angle = 0
 tilt_angle = 0
 def move_head(direction):
+    global pan_angle, tilt_angle
+
     if 'u' == direction:
         tilt_angle+=5
         if tilt_angle>30:
