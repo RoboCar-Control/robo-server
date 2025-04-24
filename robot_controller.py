@@ -16,6 +16,7 @@ from picamera2 import Picamera2
 from ultralytics import YOLO
 import subprocess
 import psutil
+from avoid_obstacle import main
 
 user = os.getlogin()
 user_home = os.path.expanduser(f'~{user}')
@@ -26,7 +27,7 @@ model = YOLO("yolov8n.pt")
 reset_mcu()
 sleep(0.2)
 px = Picarx()
-
+main(px)
 status = ''
 def move(direction, speed):
     if direction == 'forward':
