@@ -67,8 +67,8 @@ def video_processing():
     try:
         while color_running:
             frame = camera.capture_array()
-            if frame.shape[2] == 4:
-                frame = frame[:, :, :3]
+            # if frame.shape[2] == 4:
+            #     frame = frame[:, :, :3]
             
             processed_frame, detections = process_frame(frame)
             # For local display (optional)
