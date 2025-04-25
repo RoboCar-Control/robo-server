@@ -102,7 +102,7 @@ def stop_autonomous():
 line_processing = None
 def start_line_following():
     global line_processing
-    line_processing = Process(target=main_line, args=(px))
+    line_processing = Process(target=main_line, args=(px,))
     line_processing.start()
 
 def stop_line_following():
