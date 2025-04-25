@@ -148,7 +148,7 @@ def generate_frames():
             frame = camera.capture_array()
             if frame.shape[2] == 4:
                 frame = frame[:, :, :3]
-            results = model(frame)
+            results = model(frame, verbose=False)
 
             model_frame = results[0].plot()
             ret, buffer = cv2.imencode('.jpg', model_frame)
