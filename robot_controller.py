@@ -19,6 +19,7 @@ import psutil
 from avoid_obstacle import main
 from multiprocessing import Process
 from line_controller import main_line
+from color_detection import process_frame
 
 user = os.getlogin()
 user_home = os.path.expanduser(f'~{user}')
@@ -136,9 +137,9 @@ def close_stream():
     global yolo_running
     yolo_running = False
     #generate_frames()
-
+camera = Picamera2()
 def generate_frames():
-    camera = Picamera2()
+    global camera
     camera.start()
     global yolo_running
     yolo_running = True
@@ -151,6 +152,33 @@ def generate_frames():
 
             model_frame = results[0].plot()
             ret, buffer = cv2.imencode('.jpg', model_frame)
+            if not ret:
+                print("Failed to encode frame")
+                continue
+
+            jpg_as_text = base64.b64encode(buffer).decode('utf-8')
+            yield jpg_as_text
+
+            time.sleep(0.03)
+    finally:
+        camera.close()
+
+color_running = False
+def video_processing():
+    global color_running, camera
+    """Main video processing loop"""
+    # cap = cv2.VideoCapture(0)
+    camera.start()
+    color_running = True
+    try:
+        while color_running:
+            frame = camera.capture_array()
+            # if frame.shape[2] == 4:
+            #     frame = frame[:, :, :3]
+            
+            processed_frame, detections = process_frame(frame)
+            # For local display (optional)
+            ret, buffer = cv2.imencode('.jpg', processed_frame)
             if not ret:
                 print("Failed to encode frame")
                 continue

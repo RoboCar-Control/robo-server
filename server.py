@@ -2,7 +2,6 @@ from flask import Flask, Response
 from flask_socketio import SocketIO, emit
 import robot_controller as robot
 import logger
-from color_detection import video_processing
 
 
 app = Flask(__name__)
@@ -86,7 +85,7 @@ def handle_video_stream():
 
 @socketio.on('detect-color')
 def handle_detect_stream():
-    for frame in video_processing():
+    for frame in robot.video_processing():
         socketio.emit('color_frame', {'image': frame})
         socketio.sleep(0.03)
 

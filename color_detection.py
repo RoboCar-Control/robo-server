@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-from picamera2 import Picamera2
 import time
 import base64
 
@@ -56,33 +55,33 @@ def process_frame(frame):
     
     return frame, detections
 
-color_running = False
-def video_processing():
-    global color_running
-    """Main video processing loop"""
-    # cap = cv2.VideoCapture(0)
-    camera = Picamera2()
-    camera.start()
-    color_running = True
-    try:
-        while color_running:
-            frame = camera.capture_array()
-            # if frame.shape[2] == 4:
-            #     frame = frame[:, :, :3]
+# color_running = False
+# def video_processing():
+#     global color_running
+#     """Main video processing loop"""
+#     # cap = cv2.VideoCapture(0)
+#     camera = Picamera2()
+#     camera.start()
+#     color_running = True
+#     try:
+#         while color_running:
+#             frame = camera.capture_array()
+#             # if frame.shape[2] == 4:
+#             #     frame = frame[:, :, :3]
             
-            processed_frame, detections = process_frame(frame)
-            # For local display (optional)
-            ret, buffer = cv2.imencode('.jpg', processed_frame)
-            if not ret:
-                print("Failed to encode frame")
-                continue
+#             processed_frame, detections = process_frame(frame)
+#             # For local display (optional)
+#             ret, buffer = cv2.imencode('.jpg', processed_frame)
+#             if not ret:
+#                 print("Failed to encode frame")
+#                 continue
 
-            jpg_as_text = base64.b64encode(buffer).decode('utf-8')
-            yield jpg_as_text
+#             jpg_as_text = base64.b64encode(buffer).decode('utf-8')
+#             yield jpg_as_text
 
-            time.sleep(0.03)
-    finally:
-        camera.close()
+#             time.sleep(0.03)
+#     finally:
+#         camera.close()
     
  
 #video_processing()
