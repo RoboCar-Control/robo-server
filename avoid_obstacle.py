@@ -1,6 +1,4 @@
-# from picarx import Picarx
 import time
-# from robot_controller import stop_flag
 
 POWER = 50
 SafeDistance = 40   # > 40 safe

@@ -19,6 +19,7 @@ import psutil
 from avoid_obstacle import main
 import threading
 from multiprocessing import Process
+from line_controller import main_line
 
 user = os.getlogin()
 user_home = os.path.expanduser(f'~{user}')
@@ -73,17 +74,13 @@ def move_head(direction):
 
     px.set_cam_tilt_angle(tilt_angle)
     px.set_cam_pan_angle(pan_angle)
-    
 
 
 def stop():
     px.stop()
 
-
-
 def increase_speed(speed):
     move(status, speed)
-    
 
 should_stop = True
 def stop_flag():
@@ -102,36 +99,17 @@ def stop_autonomous():
     autonomous_process.terminate()
     px.stop()
 
+line_processing = None
+def start_line_following():
+    global line_processing
+    line_processing = Process(target=main_line, args=(px))
+    line_processing.start()
 
-# def start_autonomous():
-#     POWER = 50
-#     SafeDistance = 40
-#     DangerDistance = 20
+def stop_line_following():
+    global line_processing
+    line_processing.terminate()
+    px.stop
 
-#     try:
-#         while True:
-#             distance = round(px.ultrasonic.read(), 2)
-#             print(f"Distance: {distance} cm", end=' - ')
-
-#             if distance >= SafeDistance:
-#                 print("Moving forward")
-#                 px.set_dir_servo_angle(0)
-#                 px.forward(POWER)
-#             elif DangerDistance <= distance < SafeDistance:
-#                 print("Avoiding obstacle")
-#                 px.set_dir_servo_angle(30)
-#                 px.forward(POWER)
-#                 time.sleep(0.1)
-#             else:
-#                 print("Too close! Reversing")
-#                 px.set_dir_servo_angle(-30)
-#                 px.backward(POWER)
-#                 time.sleep(0.5)
-#     except KeyboardInterrupt:
-#         print("Autonomous mode interrupted.")
-#     finally:
-#         px.forward(0)
-#         print("Motors stopped.")
 
 # def take_photo():
 #     _time = strftime('%Y-%m-%d-%H-%M-%S',localtime(time()))
