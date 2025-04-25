@@ -145,8 +145,8 @@ def generate_frames():
     try:
         while yolo_running:
             frame = camera.capture_array()
-            if frame.shape[2] == 4:
-                frame = frame[:, :, :3]
+            # if frame.shape[2] == 4:
+            #     frame = frame[:, :, :3]
             results = model(frame, verbose=False)
 
             model_frame = results[0].plot()
