@@ -1,6 +1,9 @@
 import cv2
 import numpy as np
- 
+from picamera2 import Picamera2
+import time
+import base64
+
 # Global variables for color detection
 selected_hsv = np.array([0, 0, 255])  # Default to white
 h_tol, s_tol, v_tol = 10, 100, 100  # Default tolerances
@@ -52,24 +55,35 @@ def process_frame(frame):
                         cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
     
     return frame, detections
- 
+
+color_running = False
 def video_processing():
+    global color_running
     """Main video processing loop"""
-    cap = cv2.VideoCapture(0)
-    
-    while running:
-        ret, frame = cap.read()
-        if not ret:
-            break
+    # cap = cv2.VideoCapture(0)
+    camera = Picamera2()
+    camera.start()
+    color_running = True
+    try:
+        while color_running:
+            frame = camera.capture_array()
+            if frame.shape[2] == 4:
+                frame = frame[:, :, :3]
             
-        processed_frame, detections = process_frame(frame)
-        # For local display (optional)
-        cv2.imshow('Color Detection', processed_frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
- 
-    cap.release()
-    cv2.destroyAllWindows()
+            processed_frame, detections = process_frame(frame)
+            # For local display (optional)
+            ret, buffer = cv2.imencode('.jpg', processed_frame)
+            if not ret:
+                print("Failed to encode frame")
+                continue
+
+            jpg_as_text = base64.b64encode(buffer).decode('utf-8')
+            yield jpg_as_text
+
+            time.sleep(0.03)
+    finally:
+        camera.close()
+    
  
 #video_processing()
  

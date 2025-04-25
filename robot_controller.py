@@ -17,7 +17,6 @@ from ultralytics import YOLO
 import subprocess
 import psutil
 from avoid_obstacle import main
-import threading
 from multiprocessing import Process
 from line_controller import main_line
 
