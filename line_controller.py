@@ -37,7 +37,7 @@ def outHandle(px):
         px.backward(10)
     while True:
         gm_val_list = px.get_grayscale_data()
-        gm_state = get_status(gm_val_list)
+        gm_state = get_status(px, gm_val_list)
         print("outHandle gm_val_list: %s, %s"%(gm_val_list, gm_state))
         currentSta = gm_state
         if currentSta != last_state:
