@@ -62,11 +62,20 @@ def on_start_autonomous():
 
 @socketio.on('stop_autonomous')
 def on_stop_autonomous(data):
-    message = data.get('message')
-    print(message)
     robot.stop_autonomous()
     logger.log_event('autonomous', "Autonomous mode stopped")
     emit('status', {'message': "Autonomous mode stopped"})
+
+@socketio.on('start_line_following')
+def start_line_following():
+    robot.start_line_following()
+    emit('status', {'message', 'line follow start'})
+
+@socketio.on('stop_line_following')
+def stop_line_following():
+    robot.stop_line_following()
+    emit('status', {'message', 'line follow stop'})
+
 
 @socketio.on('video-stream')
 def handle_video_stream():
