@@ -108,7 +108,7 @@ def start_line_following():
 def stop_line_following():
     global line_processing
     line_processing.terminate()
-    px.stop
+    px.stop()
 
 
 # def take_photo():
