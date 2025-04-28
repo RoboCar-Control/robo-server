@@ -140,6 +140,8 @@ def close_stream():
 
 def generate_frames():
     global camera
+    config = camera.create_preview_configuration()
+    camera.configure(config)
     camera.start()
     global yolo_running
     yolo_running = True
@@ -173,6 +175,8 @@ def video_processing(color):
     global color_running, camera
     """Main video processing loop"""
     # cap = cv2.VideoCapture(0)
+    config = camera.create_preview_configuration()
+    camera.configure(config)
     camera.start()
     color_running = True
     try:
