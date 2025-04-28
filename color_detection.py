@@ -23,13 +23,14 @@ def get_flexible_range(hsv, h_tol, s_tol, v_tol):
     upper = np.array([min(h + h_tol, 179), min(s + s_tol, 255), min(v + v_tol, 255)])
     return lower, upper
  
-def process_frame(frame):
+def process_frame(frame, color):
     """Process a single frame for color detection"""
     global selected_hsv, h_tol, s_tol, v_tol
-    
+
+    selected_hsv = hex_to_hsv(color)
     # Get HSV bounds
     lower, upper = get_flexible_range(selected_hsv, h_tol, s_tol, v_tol)
-    
+
     # Convert and detect
     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv_frame, lower, upper)
@@ -54,80 +55,3 @@ def process_frame(frame):
                         cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
     
     return frame, detections
-
-# color_running = False
-# def video_processing():
-#     global color_running
-#     """Main video processing loop"""
-#     # cap = cv2.VideoCapture(0)
-#     camera = Picamera2()
-#     camera.start()
-#     color_running = True
-#     try:
-#         while color_running:
-#             frame = camera.capture_array()
-#             # if frame.shape[2] == 4:
-#             #     frame = frame[:, :, :3]
-            
-#             processed_frame, detections = process_frame(frame)
-#             # For local display (optional)
-#             ret, buffer = cv2.imencode('.jpg', processed_frame)
-#             if not ret:
-#                 print("Failed to encode frame")
-#                 continue
-
-#             jpg_as_text = base64.b64encode(buffer).decode('utf-8')
-#             yield jpg_as_text
-
-#             time.sleep(0.03)
-#     finally:
-#         camera.close()
-    
- 
-#video_processing()
- 
- 
-# @socketio.on('startDetection')
-# def handle_start():
-#     """Start the color detection"""
-#     global running
-#     running = True
-#     socketio.start_background_task(video_processing)
-#     print("Color detection started")
- 
-# @socketio.on('stopDetection')
-# def handle_stop():
-#     """Stop the color detection"""
-#     global running
-#     running = False
-#     print("Color detection stopped")
- 
-# @socketio.on('setColor')
-# def handle_set_color(data):
-#     """Handle color updates from frontend"""
-#     global selected_hsv
-    
-#     try:
-#         if data['type'] == 'hex':
-#             selected_hsv = hex_to_hsv(data['value'])
-#         elif data['type'] == 'hsv':
-#             h, s, v = data['value']['h'], data['value']['s'], data['value']['v']
-#             selected_hsv = np.array([h, s, v])
-        
-#         print(f"Updated color to HSV: {selected_hsv}")
-#         socketio.emit('colorUpdated', {'hsv': selected_hsv.tolist()})
-#     except Exception as e:
-#         print(f"Error setting color: {str(e)}")
- 
-# @socketio.on('setTolerance')
-# def handle_set_tolerance(data):
-#     """Handle tolerance updates from frontend"""
-#     global h_tol, s_tol, v_tol
-    
-#     try:
-#         h_tol = data.get('h', h_tol)
-#         s_tol = data.get('s', s_tol)
-#         v_tol = data.get('v', v_tol)
-#         print(f"Updated tolerances - H: {h_tol}, S: {s_tol}, V: {v_tol}")
-#     except Exception as e:
-#         print(f"Error setting tolerances: {str(e)}")

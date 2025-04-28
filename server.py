@@ -84,8 +84,9 @@ def handle_video_stream():
         socketio.sleep(0.03)
 
 @socketio.on('detect-color')
-def handle_detect_stream():
-    for frame in robot.video_processing():
+def handle_detect_stream(data):
+    color = data.get()
+    for frame in robot.video_processing(color):
         socketio.emit('color_frame', {'image': frame})
         socketio.sleep(0.03)
 
