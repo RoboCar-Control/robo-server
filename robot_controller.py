@@ -136,7 +136,7 @@ yolo_running = True
 def close_stream():
     global yolo_running, camera
     yolo_running = False
-    camera.close()
+    camera.stop()
 
 def generate_frames():
     global camera
@@ -167,7 +167,7 @@ color_running = False
 def close_color_video():
     global color_running, camera
     color_running = False
-    camera.close()
+    camera.stop()
 
 def video_processing(color):
     global color_running, camera
