@@ -79,7 +79,6 @@ def stop_line_following():
 @socketio.on('video-stream')
 def handle_video_stream():
     for frame in robot.generate_frames():
-        print("video button click")
         socketio.emit('video_frame', {'image': frame})
         socketio.sleep(0.03)
 
