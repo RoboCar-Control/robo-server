@@ -164,7 +164,6 @@ def generate_frames():
         camera.close()
 
 color_running = False
-
 def close_color_video():
     global color_running
     color_running = False
@@ -178,9 +177,6 @@ def video_processing(color):
     try:
         while color_running:
             frame = camera.capture_array()
-            # if frame.shape[2] == 4:
-            #     frame = frame[:, :, :3]
-            
             processed_frame, detections = process_frame(frame, color)
             # For local display (optional)
             ret, buffer = cv2.imencode('.jpg', processed_frame)
