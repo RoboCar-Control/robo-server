@@ -131,13 +131,13 @@ def get_cup_status():
     cpu_usage = psutil.cpu_percent(interval=1)
     return cpu_usage
 
-yolo_running = True
-
-def close_stream():
-    global yolo_running
-    yolo_running = False
-    #generate_frames()
 camera = Picamera2()
+yolo_running = True
+def close_stream():
+    global yolo_running, camera
+    yolo_running = False
+    camera.close()
+
 def generate_frames():
     global camera
     camera.start()
@@ -165,8 +165,9 @@ def generate_frames():
 
 color_running = False
 def close_color_video():
-    global color_running
+    global color_running, camera
     color_running = False
+    camera.close()
 
 def video_processing(color):
     global color_running, camera
