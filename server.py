@@ -89,6 +89,11 @@ def handle_detect_stream(data):
         socketio.emit('color_frame', {'image': frame})
         socketio.sleep(0.03)
 
+@socketio.on('close_color_detect')
+def on_stop_color_detect():
+    robot.close_color_video()
+    emit('status', {'message': "Recording stopped"})
+
 @socketio.on('stop_stream')
 def on_stop_recording():
     robot.close_stream()

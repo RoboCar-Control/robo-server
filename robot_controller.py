@@ -164,6 +164,11 @@ def generate_frames():
         camera.close()
 
 color_running = False
+
+def close_color_video():
+    global color_running
+    color_running = False
+
 def video_processing(color):
     global color_running, camera
     """Main video processing loop"""
